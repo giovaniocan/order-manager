@@ -1,0 +1,49 @@
+<div class="container">
+  <h1>Pedidos</h1>
+=
+  <div class="filters">
+    <label for="statusFilter">Filtrar por status:</label>
+    <select id="statusFilter" [(ngModel)]="statusFilter" (ngModelChange)="applyFilter()">
+      <option value="">Todos</option>
+      <option value="OPEN">Aberto</option>
+      <option value="CLOSED">Fechado</option>
+    </select>
+
+    <button (click)="createOrder()">+ Novo Pedido</button>
+  </div>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <p *ngIf="loading">Carregando...</p>
+
+  <table *ngIf="!loading">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Data</th>
+        <th>Status</th>
+        <th>Produtos</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of filteredOrders; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td>
+          <span [class]="'badge badge--' + order.status">
+            {{ order.status === 'OPEN' ? 'Aberto' : 'Fechado' }}
+          </span>
+        </td>
+        <td>{{ order.products.length }}</td>
+        <td>
+          <a [routerLink]="['/orders', order.id]">Ver detalhes</a>
+        </td>
+      </tr>
+
+      <tr *ngIf="filteredOrders.length === 0">
+        <td colspan="5">Nenhum pedido encontrado.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
