@@ -1,59 +1,32 @@
-# OrderManager
+# 📦 Order Manager - Teste Técnico Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+Este projeto é uma aplicação Angular desenvolvida para gerenciar pedidos de uma loja. O objetivo principal é demonstrar competências em arquitetura modular, gestão de estado com RxJS, validações de regras de negócio e boas práticas de desenvolvimento (Docker e Testes).
 
-## Development server
+## 🚀 Funcionalidades
 
-To start a local development server, run:
+### Gestão de Pedidos
+- **Listagem de Pedidos:** Visualização de todos os pedidos registrados.
+- **Filtro por Status:** Possibilidade de filtrar pedidos por `ABERTO` ou `FECHADO` (Funcionalidade opcional implementada).
+- **Criação de Pedidos:** Fluxo para iniciar um novo pedido vazio.
 
-```bash
-ng serve
-```
+### Detalhes e Itens
+- **Adicionar Produtos:** Inclusão de itens com validação de descrição (máx. 50 caracteres).
+- **Remover Itens:** Exclusão de produtos de pedidos ainda abertos.
+- **Fechamento de Pedido:** Regra de negócio que impede o fechamento de pedidos vazios ou a alteração de pedidos já fechados.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🛠️ Tecnologias Utilizadas
 
-## Code scaffolding
+- **Angular 17+:** Utilizando componentes Standalone e Signals para controle de estado reativo.
+- **RxJS:** Gerenciamento de fluxos assíncronos e simulação de chamadas de API com Observables.
+- **TypeScript:** Tipagem estrita para maior segurança do código.
+- **Docker & Docker Compose:** Containerização da aplicação.
+- **Karma/Jasmine:** Suíte de testes unitários.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🐳 Executando com Docker (Recomendado)
 
-```bash
-ng generate component component-name
-```
+A aplicação está totalmente dockerizada. O grande diferencial desta configuração é que o **build só é concluído se todos os testes passarem**, garantindo a integridade do código.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Para rodar o projeto via Docker, certifique-se de ter o Docker instalado e execute:
 
 ```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+docker-compose up --build
