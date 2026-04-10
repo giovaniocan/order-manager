@@ -1,70 +1,104 @@
 <div class="container">
-  <a [routerLink]="['/orders']">← Voltar</a>
 
-  <div *ngIf="loading">Carregando...</div>
+  <a class="back-link" [routerLink]="['/orders']">← Voltar para pedidos</a>
 
-  <div *ngIf="order && !loading">
+  @if (loading()) {
+    <div style="color:var(--gray-400); margin-top: 20px;">Carregando...</div>
+  }
+
+
+  @if (order && !loading()) {
     <div class="order-header">
-      <h1>Pedido #{{ order.id | slice:0:8 }}</h1>
+      <h1>Pedido</h1>
+      <span class="order-id">{{ order.id | slice:0:8 }}</span>
       <span [class]="'badge badge--' + order.status">
         {{ order.status === 'OPEN' ? 'Aberto' : 'Fechado' }}
       </span>
       <small>{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</small>
     </div>
 
-    <p class="error" *ngIf="error">{{ error }}</p>
+    @if (error) {
+      <div class="alert alert-danger">{{ error }}</div>
+    }
 
-    <div class="add-product" *ngIf="!isClosed">
-      <h2>Adicionar Produto</h2>
-      <div class="input-group">
-        <input
-          type="text"
-          [(ngModel)]="newProductDescription"
-          placeholder="Descrição do produto (máx. 50 caracteres)"
-          maxlength="50"
-        />
-        <small>{{ descriptionLength }}/50</small>
+    @if (isClosed) {
+      <div class="alert alert-info">
+        Pedido fechado. Não é possível adicionar ou remover produtos.
       </div>
-      <button
-        (click)="addProduct()"
-        [disabled]="!newProductDescription.trim()"
-      >
-        Adicionar
-      </button>
+    }
+
+    @if (!isClosed) {
+      <div class="card">
+        <div class="card-header"><h2>Adicionar Produto</h2></div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="desc">Descrição</label>
+            <div class="input-row">
+              <input
+                id="desc"
+                type="text"
+                [(ngModel)]="newProductDescription"
+                placeholder="Ex: Camiseta azul P"
+                maxlength="50"
+              />
+              <button class="btn-primary"
+                (click)="addProduct()"
+                [disabled]="!newProductDescription.trim()">
+                Adicionar
+              </button>
+            </div>
+            <div class="char-count" 
+                 [class.warn]="descriptionLength > 35" 
+                 [class.limit]="descriptionLength === 50">
+              {{ descriptionLength }}/50
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Produtos</h2>
+        <span style="font-size:.8rem; color:var(--gray-400)">{{ order.products.length }} item(s)</span>
+      </div>
+      <div class="card-body">
+        
+        <ul class="product-list">
+          @for (product of order.products; track product.id) {
+            <li class="product-item">
+              <span>{{ product.description }}</span>
+              @if (!isClosed) {
+                <button class="btn-danger" (click)="removeProduct(product.id)">
+                  Remover
+                </button>
+              }
+            </li>
+          } @empty {
+            <p style="color:var(--gray-400); font-size:.875rem">
+              Nenhum produto adicionado.
+            </p>
+          }
+        </ul>
+      </div>
+
+      @if (!isClosed) {
+        <div style="padding:14px 18px; border-top:1px solid var(--border); display:flex; align-items:center; gap:10px">
+          <button class="btn-primary" (click)="closeOrder()" [disabled]="!canClose">
+            Fechar Pedido
+          </button>
+          @if (!canClose) {
+            <span style="font-size:.8rem; color:var(--gray-400)">
+              Adicione ao menos um produto para fechar.
+            </span>
+          }
+        </div>
+      }
     </div>
-
-    <div *ngIf="isClosed" class="info-box">
-      Este pedido está fechado. Não é possível adicionar ou remover produtos.
+  } @else if (!loading && !order) {
+    <div class="alert alert-danger" style="margin-top: 20px;">
+      Pedido não encontrado ou ID inválido.
     </div>
+  }
 
-    <h2>Produtos ({{ order.products.length }})</h2>
-
-    <p *ngIf="order.products.length === 0">Nenhum produto adicionado.</p>
-
-    <ul *ngIf="order.products.length > 0">
-      <li *ngFor="let product of order.products" class="product-item">
-        <span>{{ product.description }}</span>
-        <button
-          *ngIf="!isClosed"
-          (click)="removeProduct(product.id)"
-          class="btn-danger"
-        >
-          Remover
-        </button>
-      </li>
-    </ul>
-
-    <!-- Fechar pedido -->
-    <button
-      *ngIf="!isClosed"
-      (click)="closeOrder()"
-      [disabled]="!canClose"
-      class="btn-close"
-    >
-      Fechar Pedido
-    </button>
-    <small *ngIf="!isClosed && !canClose">
-      Adicione ao menos um produto para fechar o pedido.
-    </small>
-  </div>
 </div>

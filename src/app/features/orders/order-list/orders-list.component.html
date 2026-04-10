@@ -1,49 +1,67 @@
 <div class="container">
-  <h1>Pedidos</h1>
-=
-  <div class="filters">
-    <label for="statusFilter">Filtrar por status:</label>
-    <select id="statusFilter" [(ngModel)]="statusFilter" (ngModelChange)="applyFilter()">
-      <option value="">Todos</option>
-      <option value="OPEN">Aberto</option>
-      <option value="CLOSED">Fechado</option>
-    </select>
 
-    <button (click)="createOrder()">+ Novo Pedido</button>
+  <div class="topbar">
+    <div>
+      <h1>Pedidos</h1>
+      <p class="subtitle">Gerencie todos os pedidos da loja</p>
+    </div>
+    <button class="btn-primary" (click)="createOrder()">+ Novo Pedido</button>
   </div>
 
-  <p class="error" *ngIf="error">{{ error }}</p>
+  @if (error) {
+    <div class="alert alert-danger">{{ error }}</div>
+  }
 
-  <p *ngIf="loading">Carregando...</p>
+  <div class="card">
+    <div class="card-header">
+      <h2>Lista de Pedidos</h2>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <label for="statusFilter" style="font-size:.8rem; color:var(--gray-500)">Filtrar:</label>
+        <select id="statusFilter" style="width:auto"
+          [(ngModel)]="statusFilter" (ngModelChange)="applyFilter()">
+          <option value="">Todos</option>
+          <option value="OPEN">Abertos</option>
+          <option value="CLOSED">Fechados</option>
+        </select>
+      </div>
+    </div>
 
-  <table *ngIf="!loading">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Data</th>
-        <th>Status</th>
-        <th>Produtos</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let order of filteredOrders; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
-        <td>
-          <span [class]="'badge badge--' + order.status">
-            {{ order.status === 'OPEN' ? 'Aberto' : 'Fechado' }}
-          </span>
-        </td>
-        <td>{{ order.products.length }}</td>
-        <td>
-          <a [routerLink]="['/orders', order.id]">Ver detalhes</a>
-        </td>
-      </tr>
+    @if (loading()) {
+      <p style="padding:16px 18px; color:var(--gray-400)">Carregando...</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th>Produtos</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of filteredOrders; track order.id) {
+            <tr>
+              <td><span class="order-id">{{ order.id | slice:0:8 }}</span></td>
+              <td>{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>
+                <span [class]="'badge badge--' + order.status">
+                  {{ order.status === 'OPEN' ? 'Aberto' : 'Fechado' }}
+                </span>
+              </td>
+              <td>{{ order.products.length }}</td>
+              <td>
+                <a class="btn-ghost" [routerLink]="['/orders', order.id]">Ver →</a>
+              </td>
+            </tr>
+          } @empty {
+            <tr class="empty-row">
+              <td colspan="5">Nenhum pedido encontrado.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
 
-      <tr *ngIf="filteredOrders.length === 0">
-        <td colspan="5">Nenhum pedido encontrado.</td>
-      </tr>
-    </tbody>
-  </table>
 </div>

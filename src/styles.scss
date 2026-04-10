@@ -1,1 +1,340 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+/* ── Variáveis ── */
+:root {
+  --primary:      #2563eb;
+  --primary-dark: #1d4ed8;
+  --primary-bg:   #eff6ff;
+
+  --success-bg:   #f0fdf4;
+  --success:      #16a34a;
+  --warning-bg:   #fffbeb;
+  --warning:      #b45309;
+  --danger:       #dc2626;
+  --danger-bg:    #fef2f2;
+
+  --gray-50:  #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  --white:   #ffffff;
+  --border:  #e5e7eb;
+  --radius:  8px;
+  --shadow:  0 1px 3px rgba(0,0,0,.1);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--gray-100);
+  color: var(--gray-800);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Container ── */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+/* ── Page Title ── */
+h1 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: .825rem;
+  color: var(--gray-500);
+  margin-bottom: 24px;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--gray-50);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  h2 {
+    font-size: .9375rem;
+    font-weight: 600;
+    color: var(--gray-800);
+  }
+}
+
+.card-body { padding: 18px; }
+
+/* ── Topbar da listagem ── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+/* ── Tabela ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .875rem;
+
+  thead {
+    background: var(--gray-50);
+    th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: .7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--gray-500);
+      border-bottom: 1px solid var(--border);
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .12s;
+      &:last-child { border-bottom: none; }
+      &:hover { background: var(--gray-50); }
+    }
+
+    td {
+      padding: 12px 14px;
+      color: var(--gray-700);
+      vertical-align: middle;
+    }
+  }
+
+  .empty-row td {
+    text-align: center;
+    padding: 48px 14px;
+    color: var(--gray-400);
+  }
+}
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: .7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+
+  &--open   { background: var(--warning-bg); color: var(--warning); }
+  &--closed { background: var(--success-bg); color: var(--success); }
+}
+
+/* ── Order ID ── */
+.order-id {
+  font-family: monospace;
+  font-size: .78rem;
+  background: var(--gray-100);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  color: var(--gray-500);
+}
+
+/* ── Botões ── */
+button, .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: .875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background .15s, box-shadow .15s;
+
+  &:disabled { opacity: .5; cursor: not-allowed; }
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  &:hover:not(:disabled) { background: var(--primary-dark); }
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--gray-700);
+  border-color: var(--border);
+  &:hover:not(:disabled) { background: var(--gray-100); }
+}
+
+.btn-danger {
+  background: var(--white);
+  color: var(--danger);
+  border-color: var(--border);
+  font-size: .8rem;
+  padding: 5px 11px;
+  &:hover:not(:disabled) { background: var(--danger-bg); border-color: var(--danger); }
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+  border-color: transparent;
+  font-size: .8rem;
+  padding: 5px 10px;
+  &:hover:not(:disabled) { background: var(--primary-bg); }
+}
+
+/* ── Formulários ── */
+.form-group {
+  margin-bottom: 14px;
+
+  label {
+    display: block;
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    margin-bottom: 5px;
+  }
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 8px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: .875rem;
+  color: var(--gray-800);
+  background: var(--white);
+  transition: border-color .15s, box-shadow .15s;
+  appearance: none;
+
+  &::placeholder { color: var(--gray-400); }
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+  }
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 32px;
+}
+
+.char-count {
+  font-size: .75rem;
+  color: var(--gray-400);
+  text-align: right;
+  margin-top: 3px;
+  &.warn  { color: var(--warning); }
+  &.limit { color: var(--danger); font-weight: 600; }
+}
+
+/* ── Alertas ── */
+.alert {
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  font-size: .875rem;
+  margin-bottom: 14px;
+  border: 1px solid transparent;
+
+  &-danger  { background: var(--danger-bg);  color: var(--danger);  border-color: #fca5a5; }
+  &-info    { background: var(--primary-bg); color: var(--primary); border-color: #bfdbfe; }
+  &-success { background: var(--success-bg); color: var(--success); border-color: #86efac; }
+}
+
+/* ── Product list ── */
+.product-list { list-style: none; }
+
+.product-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+
+  &:last-child { border-bottom: none; }
+
+  span {
+    font-size: .875rem;
+    color: var(--gray-700);
+  }
+}
+
+/* ── Back link ── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .8rem;
+  color: var(--gray-500);
+  margin-bottom: 18px;
+  transition: color .15s;
+
+  &:hover { color: var(--gray-800); text-decoration: none; }
+}
+
+/* ── Detail header ── */
+.order-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+
+  h1 { margin-bottom: 0; }
+
+  small {
+    font-size: .8rem;
+    color: var(--gray-400);
+    margin-left: auto;
+  }
+}
+
+/* ── Input row (input + botão lado a lado) ── */
+.input-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+
+  input { flex: 1; }
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -19,7 +19,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
   orders: Order[] = [];
   filteredOrders: Order[] = [];
   statusFilter: '' | OrderStatus = '';
-  loading = false;
+  loading = signal<boolean>(false);
   error = '';
 
 
@@ -40,18 +40,18 @@ export class OrdersListComponent implements OnInit, OnDestroy {
   }
 
   loadOrders(): void {
-    this.loading = true;
+    this.loading.set(true);
     this.orderService.getOrders()
       .pipe(takeUntil(this.destroy$)) 
       .subscribe({
         next: (orders) => {           
           this.orders = orders;
           this.applyFilter();
-          this.loading = false;
+          this.loading.set(false);
         },
         error: (err) => {           
           this.error = err.message;
-          this.loading = false;
+          this.loading.set(false);
         },
       });
   }

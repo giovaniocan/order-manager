@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -15,7 +15,7 @@ import { Order } from '../../../core/models/order.model';
 export class OrderDetailComponent implements OnInit, OnDestroy {
   order: Order | null = null;
   newProductDescription = '';
-  loading = false;
+  loading = signal<boolean>(false);
   error = '';
 
   private destroy$ = new Subject<void>();
@@ -37,7 +37,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
   loadOrder(): void {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.loading = true;
+    this.loading.set(true);
 
     this.orderService.getOrderById(id)
       .pipe(takeUntil(this.destroy$))
@@ -48,9 +48,12 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
             return;
           }
           this.order = order;
-          this.loading = false;
+          this.loading.set(false);
         },
-        error: () => this.router.navigate(['/orders']),
+        error: () => {
+            this.loading.set(false);
+            this.router.navigate(['/orders'])
+        },
       });
   }
 
