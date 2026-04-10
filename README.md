@@ -1,4 +1,4 @@
-# 📦 Order Manager - Teste Técnico Frontend
+# 📦 Order Manager 
 
 Este projeto é uma aplicação Angular desenvolvida para gerenciar pedidos de uma loja. O objetivo principal é demonstrar competências em arquitetura modular, gestão de estado com RxJS, validações de regras de negócio e boas práticas de desenvolvimento (Docker e Testes).
 
